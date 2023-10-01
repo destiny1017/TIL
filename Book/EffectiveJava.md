@@ -13,4 +13,33 @@
    - 상속을 하려면 public이나 protected 생성자가 필요해 상속이 불가능해진다. 다만 이는 상속보다 조합을 강제하여 오히려 장점이라 볼수도 있따.
    - 정적 팩터리 메서드를 프로그래머가 찾기가 어렵다. 이를 위해 공통 규약을 따라 팩터리 메서드를 설계하는 게 좋다.
 
-   asdasd
+   ```java
+   class StaticFactoryMethod {
+   
+      // from : 하나의 매개변수, 해당 타입의 인스턴스 반환
+      Date d = Date.from(instant);
+      
+      // of : 여러 매개변수, 적합한 인스턴스 반환
+      Set<Rank> faceCards = EnumSet.of(JACK, QUEEN, KING);
+      
+      // valueOf : from과 of의 더 자세한 버전
+      BigInteger prime = BigInteger.valueOf(Integer.MAX_VALUE);
+      
+      // instance or getInstance : 명시한 인스턴스를 반환하지만, 같은 인스턴스임을 보장하지 않음
+      StackWalker luke = StackWalker.getInstance(options);
+      
+      // create or newInstance : instance 혹은 getInstance와 같지만 매번 새로운 인스턴스를 반환한다.
+      Object newArray = Array.newInstance(classObject, arrayLen);
+      
+      // get[Type] : getInstance와 같으나, 다른 클래스에서 생성할 때 쓴다.
+      FileStore fs = Files.getFileStore(path);
+   
+      // new[Type] : newInstance와 같으나, 다른 클래스에서 생성할 때 쓴다.
+      BufferedReader br = Files.newBufferedReader(path);
+      
+      // [type] : getType과 newType의 간결한 버전
+      List<Complaint> litany = Collections.list(legacyLitany);
+   
+   }
+   ```
+ 
