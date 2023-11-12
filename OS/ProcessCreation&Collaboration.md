@@ -4,7 +4,7 @@
 
 ### 프로세스 생성&삭제 함수
   
-***프로세스 생성 과정**
+***프로세스 생성 과정**  
 ![img.png](../assets/process_createion.png)
 
 #### 1. fork()
