@@ -22,7 +22,7 @@
   어떠한 페이지도 메모리에 올리지 않고 실행하는 것을 Pure demand paging이라 한다.
 
 - #### Valid-Invalid Bit
-  ![img_2.png](../assets/demand_paging2.png)
+  ![img_2.png](../assets/demand_paging2.png)  
   요구 페이징 기법을 사용하면, 페이지 테이블의 데이터는 메모리 또는 Backing Store에 존재하게 된다.
   Backing Store에 존재한다면 물리 메모리에 적재하는 과정을 거쳐야하므로, 현재 페이지가 어떤 상태인지 판단할 flag값이 필요한데,
   이를 valid-invalid bit라고 하며, 페이지 테이블에는 기본적으로 페이지와 이 v/i bit가 존재하게 된다.
