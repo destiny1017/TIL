@@ -1,6 +1,7 @@
 ## 리플리케이션 & 클러스터링
 
-###1. 리플리케이션(Replication)?
+### 1. 리플리케이션(Replication)?
+![img_1.png](../assets/replication.png)
 - 여러개의 DB를 권한에 따라 수직적인 구조(Master/Slave)로 구축하는 방법을 의미한다.
 - Master Node는 쓰기작업만을 처리하며, Slave Node는 읽기작업만을 처리한다.
 - 비동기방식으로 데이터들의 동기화를 처리한다.
@@ -9,7 +10,8 @@
   - 쓰기와 읽기 작업이 분산되어 부하분산 가능
   - Master DB작업시 Slave DB로 복사작업이 이루어지는 시간이 있으므로, 이 시간동안에는 데이터 무결성을 보장할 수 없음.
 
-###2. 클러스터링(Clustering)
+### 2. 클러스터링(Clustering)
+![img.png](../assets/clustering.png)
 - 여러개의 DB를 수평적인 구조로 구축하는 방법을 의미한다.
 - DB를 분산하여 단일장애점(SPOF) 문제를 해결하는 Fail Over 시스템을 구축하기위해 사용한다.
 - 동기방식으로 데이터들의 동기화를 처리한다.
