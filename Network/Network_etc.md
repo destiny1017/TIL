@@ -1,9 +1,9 @@
 ## 네트워크 관련 개념들
 
 ### URL / URI
-- URL(Uniform Resource Locator)
+- **URL(Uniform Resource Locator)**
     - 리소스 위치를 나타내는 주소로, https://www.naver.com/ 과 같은 형식이다.
-- URI(Unifirm Resoutce Indentifier)
+- **URI(Unifirm Resoutce Indentifier)**
     - 리소스의 식별자로, 페이지에 나타내고자 하는 데이터를 결정하는 parameter를 포함한 url이라고 생각하면 된다.
         - ex) https://mail.naver.com/read/1383 → 1383은 read페이지에서 읽고자 하는 메일의 코드이므로 URI에 해당
         - ex) [https://search.naver.com/search.naver?query=검색어](https://search.naver.com/search.naver?query=%EA%B2%80%EC%83%89%EC%96%B4)  query=검색어 queryParam은 search.naver페이지에서 나타낼 데이터 식별자를 뜻하므로 URI에 해당
