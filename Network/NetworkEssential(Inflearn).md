@@ -36,7 +36,7 @@
 - **Wireshark** : 네트워크 도/감청 프로그램. 패킷의 상세 정보를 확인할 수 있다.
 - **En/Decapsulation** : 캡슐화/역캡슐화로, 네트워크 데이터를 각 레이어의 형식에 맞게 포장하고 해제하는 것을 의미한다. 네트워크 데이터는 여러 층의 중첩 캡슐화로 구성되어 있다.
   * **네트워크 데이터 구조**  
-  ![img.png](../assets/network_data_structure.png)  
+    ![img.png](../assets/network_data_structure.png)  
 - #### 네트워크 계층별 데이터 단위
   - Stream : 5~7계층 데이터의 단위. header/payload 구조가 아닌 직렬화된 형태를 지닌다.
   - Segmentation : 4계층 TCP의 데이터 단위. MSS(Maximum Segment Size)는 1460byte이다.
