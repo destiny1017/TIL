@@ -35,7 +35,7 @@
 - **MTU(Maximum Transmission Unit)** : 패킷의 최대 크기. 1500byte 로 약 1.4KB 이다.
 - **Wireshark** : 네트워크 도/감청 프로그램. 패킷의 상세 정보를 확인할 수 있다.
 - **En/Decapsulation** : 캡슐화/역캡슐화로, 네트워크 데이터를 각 레이어의 형식에 맞게 포장하고 해제하는 것을 의미한다. 네트워크 데이터는 여러 층의 중첩 캡슐화로 구성되어 있다.
-  * **네트워크 데이터 구조**
+  * **네트워크 데이터 구조**  
   ![img.png](../assets/network_data_structure.png)  
 - #### 네트워크 계층별 데이터 단위
   - Stream : 5~7계층 데이터의 단위. header/payload 구조가 아닌 직렬화된 형태를 지닌다.
@@ -102,7 +102,7 @@ CIDR 표기법은 서브넷 마스크에 비해 훨씬 직관적이며, 8비트 
 
 #### Host 자신을 가리키는 IP주소
 127.0.0.1이라는 주소는 외부의 ip가 아닌 현재 프로세스와 동일한 호스트를 가리키는 주소이다. dest 주소가 127.0.0.1이면 통신 시 NIC로 도달하지 않고 L3 IP에서 다시 TCP로 되돌려 동일 호스트 내에서 도착지를 찾게 된다.
-이렇게 호스트 내에서만 이루어지는 통신을 IPC(Inter Process Protocol)이라 한다.
+이렇게 호스트 내에서만 이루어지는 통신을 IPC(Inter Process Communication)이라 한다.
 
 #### TTL과 단편화
 - TTL(Time To Live)는 패킷의 수명으로 라우터 한 개를 지날 때마다 1씩 줄어들며 0이 되면 소멸한다. TTL이 없으면 도착지가 잘못된 패킷이 끝없이 네트워크에 잔존하여 도착지를 찾아다니면서 부하를 일으킬 수 있기 때문에 TTL은 필수적이다.
@@ -117,4 +117,51 @@ ARP(Address Resolution Protocol)는 IP주소를 통해 MAC주소를 알아내려
 이러한 ARP의 동작 과정은 DHCP와 비슷하게 먼저 호스트에서 특정 IP를 찾는 패킷을 브로드캐스팅하고, 응답을 받은 호스트(게이트웨이)는 자신의 MAC Address를 reply하는 식으로 동작하게 된다. 다만 매번 브로드캐스팅하지는 않고, ARP Cache를 활용하여 최초 응답을 받은 이후에는 캐시를 참조하는 식으로 동작한다.
 
 #### Ping과 RTT
-Ping은 통신상태 측정을 위한 유틸로서, 목적지와의 정상적인 통신이 가능한지, 통신 시간은 얼마나 걸리는지 등을 파악하기 위해 사용한다. 여기서 Ping에 소요되는 시간을 RTT(Round Trip Time)이라고 하며, 이런 Ping은 인터넷 제어 메세지 프로토콜인 ICMP(Internet Control Message Protocol)을 사용하여 수행된다. 
+Ping은 통신상태 측정을 위한 유틸로서, 목적지와의 정상적인 통신이 가능한지, 통신 시간은 얼마나 걸리는지 등을 파악하기 위해 사용한다. 여기서 Ping에 소요되는 시간을 RTT(Round Trip Time)이라고 하며, 이런 Ping은 인터넷 제어 메세지 프로토콜인 ICMP(Internet Control Message Protocol)을 사용하여 수행된다.
+
+
+### L4 Layer, TCP&UDP
+
+TCP와 UDP는 모두 4계층 통신에 사용되는 프로토콜인데, 연결성과 비연결성이라는 핵심적인 차이가 존재한다. 두 프로토콜 모두 IP와 Port를 기반으로 통신하지만, TCP의 경우 목적지와 송수신 상태를 체크하고, UDP는 송신 결과에 대해 신경을 쓰지 않는다. 이런 TCP의 연결성은 늘 상태(전이) 개념을 동반한다.
+
+#### TCP 연결과정
+![img.png](../assets/3way_handshake.png)  
+TCP는 3 Way-handshake라는 과정을 거치며 연결을 수행한다. 위 과정에서의 용어의 의미는 아래와 같다.
+
+**패킷**
+- SYN(Synchronize Sequence Number) : TCP에서 연결을 요청하기위해 첫번째로 보내는 패킷이다. 임의의 시퀀스 번호를 포함하고 있다.
+- ACK(Acknowledgement) : SYN을 받았다는 결과를 응답하기 위한 패킷. SYN에 포함된 시퀀스 넘버에 +1을 하여 응답한다.
+
+**상태**
+- LISTEN : TCP 연결 요청을 받을 수 있도록 기다리며 대기하는 상태
+- SYN_SENT : TCP 연결을 위해 SYN패킷을 전송하고 SYN+ACK를 기다리는 상태
+- SYN_RCVD : SYN 패킷을 정상적으로 받고 호스트의 SYN과 ACK를 응답하고 ACK를 기다리는 상태
+- ESTABLISHED : ACK를 받고 호스트와 연결이 완료된 상태  
+
+**연결 과정**
+1. 클라이언트는 TCP 연결을 하려는 서버에 임의의 시퀀스(1000)를 포함한 SYN패킷을 보낸다.
+2. 서버는 SYN을 받은 후 자신도 임의의 시퀀스(4000)를 가진 SYN패킷을 생성하고 받은 SYN의 시퀀스에 +1을 더한 ACK(1001)을 함께 응답한다.
+3. 클라이언트는 SYN+ACK를 받은 후 TCP 연결을 정상적으로 체결하고 ACK(4001)를 보낸다. ACK를 받은 서버도 연결을 정상 체결한다.
+
+#### TCP 연결 종료 과정
+![img_1.png](../assets/4way_handshake.png)  
+
+**패킷**
+- FIN(Finish) : TCP 연결 종료 요청 패킷
+
+**상태**
+- ESTABLISHED : 포트가 연결된 상태
+- FIN_WAIT1 : 자신이 보낸 FIN에 대한 응답을 기다리는 상태
+- FIN_WAIT2 : 자신이 보낸 FIN에 대한 ACK를 받고 상대방이 보낼 FIN을 기다리는 상태
+- CLOSE_WAIT : 상대의 FIN 요청을 받은 상태. ACK 응답을 보내고 애플리케이션에 종료를 알린다.
+- LAST_ACK : CLOSE_WAIT 상태 처리 후(종료 준비작업) FIN+ACK 를 보내고 상대방의 ACK를 기다리는 상태
+- TIME_WAIT : 마지막 FIN+ACK를 받고 ACK를 응답한 뒤 연결 종료를 위해 잠시 대기하는 상태.
+- CLOSED : 연결이 종료된 상태
+
+**연결 종료 과정**
+1. 클라이언트가 서버에 연결 종료를 위해 FIN+ACK 요청을 보내고 FIN_WAIT1 상태로 전환한다.
+2. 서버가 FIN+ACK 요청을 받고 클라이언트 ACK를 응답한 뒤 CLOSE_WAIT 상태로 전환한다. 이때 ACK를 받은 클라이언트는 FIN+ACK를 받기를 대기하는 FIN_WAIT2 상태로 전환한다.
+3. 종료처리를 완료한 서버는 클라이언트에 FIN+ACK를 보내고 LAST_ACK 상태로 전환한다.
+4. FIN+ACK를 받은 클라이언트는 ACK응답을 보내고 TIME_WAIT상태로 전환한다. 일정 시간 이후 클라이언트는 다시 CLOSED 상태로 전환하며, 서버는 ACK요청을 받으면 바로 CLOSED 상태로 전환하여 연결을 종료한다.
+  
+
