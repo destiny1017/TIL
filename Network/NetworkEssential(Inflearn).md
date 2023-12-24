@@ -165,3 +165,24 @@ TCP는 3 Way-handshake라는 과정을 거치며 연결을 수행한다. 위 과
 4. FIN+ACK를 받은 클라이언트는 ACK응답을 보내고 TIME_WAIT상태로 전환한다. 일정 시간 이후 클라이언트는 다시 CLOSED 상태로 전환하며, 서버는 ACK요청을 받으면 바로 CLOSED 상태로 전환하여 연결을 종료한다.
   
 
+#### TCP 헤더 형식
+![img.png](../assets/TCP_header.png)  
+- Source/Destination port : 출발/목적지 포트 번호
+- Sequence number : tcp 시퀀스 번호. 임의의 수를 시작으로 전송한 payload 바이트 크기만큼 시퀀스가 증가한다.
+- Acknowledgement number : ACK 번호. 상대 seq번호에 +1 하여 전송한다.
+- Data offset : fragment 위치 값
+- Flags : 패킷 종류
+- Window Size : 스트림 버퍼에 남은 사이즈
+- Checksum : 패킷 오류 체크 번호
+- Urgent pointer : 어디까지가 긴급 데이터인지 알려주는 포인터
+
+#### UDP 헤더 형식
+![img_1.png](../assets/UDP_header.png)  
+- Source/Destination port : 출발/목적지 포트 번호
+- Length : 헤더와 데이터를 합친 전체 데이터그램의 크기. 8~65507 사이의 값이 된다.
+- Checksum : 패킷 오류 체크 번호  
+
+#### TCP 연결이라는 착각
+TCP를 연결성이라고 표현하고는 하지만 이는 어디까지나 논리적인 연결일 뿐 물리적으로는 전혀 연결상태가 아니다. 위의 TCP handshake 과정에서 본 것 처럼 SYN/ACK를 주고받으며 서로의 단말이 우리는 연결된 상태라고 논리적으로 정의하는 것일 뿐, 물리적으로 각 단말은 아무런 연결점이 없다.
+이런 특성 때문에 TCP는 연결지향이라고는 하지만 연결에 대한 신뢰성은 없다고 한다. 실제 연결상태가 아니기 때문에 이런 연결 상태도 얼마든지 조작될 수 있다는 건데, 보안의 3대요소인 기밀, 무결, 가용이라는 조건을 모두 충족하지 못하는 게 TCP연결이다.
+
